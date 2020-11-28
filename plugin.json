@@ -1,0 +1,18 @@
+{
+  "pluginName": "antd",
+  "description": "antd 文档查询",
+  "version": "v0.0.1",
+  "preload": "./preload.js",
+  "author": "ltaoo",
+  "homepage": "https://github.com/ltaoo",
+  "logo": "logo.png",
+  "features": [
+    {
+      "code": "antd",
+      "explain": "antd文档搜索",
+      "cmds": ["antd"],
+      "input": "./content/docs",
+      "origin": "https://github.com/reactjs/reactjs.org"
+    }
+  ]
+}

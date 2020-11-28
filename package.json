@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "jsonml-to-react-element": "^1.1.11",
+    "less": "^3.12.2",
+    "mark-twain": "^2.0.3",
+    "ramda": "^0.27.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "rimraf": "^3.0.2",
+    "utools-cli": "^0.2.1"
+  }
+}
