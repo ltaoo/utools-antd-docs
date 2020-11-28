@@ -1,7 +1,6 @@
 .DS_Store
 
 node_modules
-antd
+public
 
-components
-site
+ant-design

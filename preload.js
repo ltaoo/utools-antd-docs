@@ -3,7 +3,7 @@ window.exports = {
     // 注意：键对应的是plugin.json中的features.code
     mode: "doc", // 文档模式
     args: {
-      indexes: require("./antd/indexes.json"),
+      indexes: require("./public/indexes.json"),
       placeholder: "搜索",
     },
   },

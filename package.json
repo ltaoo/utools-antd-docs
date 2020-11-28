@@ -1,6 +1,10 @@
 {
+  "scripts": {
+    "clone": "git clone --depth 1 --branch master https://gitee.com/ant-design/ant-design.git"
+  },
   "dependencies": {
     "jsonml-to-react-element": "^1.1.11",
+    "jsonml.js": "^0.1.0",
     "less": "^3.12.2",
     "mark-twain": "^2.0.3",
     "ramda": "^0.27.1",

@@ -4,6 +4,7 @@ const fs = require("fs");
 const R = require("ramda");
 const ReactDOMServer = require("react-dom/server");
 const toReactElement = require("jsonml-to-react-element");
+const { getChildren } = require("jsonml.js/lib/utils");
 const rimraf = require("rimraf");
 const less = require("less");
 
@@ -12,9 +13,17 @@ const generate = require("./generateFilesPath");
 const markdown = require("./markdown");
 
 const PROJECT_ROOT_DIR = path.resolve(__dirname, "..");
+const PUBLIC_DIR = "./public";
+const ANTD_SOURCE_DIR = "ant-design";
 
-function resolve(pathname) {
-  return path.resolve(PROJECT_ROOT_DIR, pathname);
+function resolve(...paths) {
+  return path.resolve(PROJECT_ROOT_DIR, ...paths);
+}
+function resolvePublic(pathname = "./") {
+  return resolve(PUBLIC_DIR, pathname);
+}
+function resolveSource(...paths) {
+  return resolve(ANTD_SOURCE_DIR, ...paths);
 }
 // console.log(markdowns);
 /**
@@ -35,13 +44,23 @@ function createHTMLContent(markdown) {
   const {
     meta: { title, subtitle },
     content,
+    api,
   } = markdown;
-  if (title === 'Button') {
+  if (title === "Button") {
     console.log(content);
   }
   const reactElement = toReactElement(content);
+  const apiElement = toReactElement(
+    [
+      "section",
+      {
+        className: "markdown api-container",
+      },
+    ].concat(getChildren(api || ["placeholder"]))
+  );
   // API 部分单独拿出来处理了
   const htmlElement = ReactDOMServer.renderToString(reactElement);
+  const apiHTMLElement = ReactDOMServer.renderToString(apiElement);
 
   return `<html>
   <head>
@@ -54,6 +73,7 @@ function createHTMLContent(markdown) {
         <section class="markdown">
           <h1>${title}<span class="subtitle">${subtitle}</span></h1>
           ${htmlElement}
+          ${apiHTMLElement}
         </section>
       </article>
     </section>
@@ -66,28 +86,29 @@ function createDocsConfig(markdowns) {
   const docsConfig = markdowns.map((markdown) => {
     const {
       meta: { title, subtitle },
+      content,
     } = markdown;
     return {
       t: `${title} ${subtitle}`,
-      d: subtitle,
-      p: `antd/${title}.html`,
+      d: content[1][1],
+      p: `./public/${title}.html`,
     };
   });
 
   const config = JSON.stringify(docsConfig);
-  fs.writeFileSync(resolve("./antd/indexes.json"), config);
+  fs.writeFileSync(resolvePublic("./indexes.json"), config);
 }
 function createPages(markdowns) {
   markdowns.forEach((markdown) => {
     const { meta } = markdown;
     const htmlContent = createHTMLContent(markdown);
 
-    fs.writeFileSync(resolve(`./antd/${meta.title}.html`), htmlContent);
+    fs.writeFileSync(resolvePublic(`./${meta.title}.html`), htmlContent);
   });
 }
 
 function createMarkdowns() {
-  const doc = resolve("./components");
+  const doc = resolveSource("./components");
   const transformers = [
     {
       test: /\.md$/,
@@ -115,9 +136,9 @@ function createMarkdowns() {
 }
 
 module.exports.clean = function clean() {
-  rimraf.sync(resolve("./antd"));
-  fs.mkdirSync(resolve("./antd"));
-  fs.mkdirSync(resolve("./antd/assets"));
+  rimraf.sync(resolvePublic());
+  fs.mkdirSync(resolvePublic());
+  fs.mkdirSync(resolvePublic("./assets"));
 };
 module.exports.buildPages = function buildPages() {
   const markdowns = createMarkdowns();
@@ -125,15 +146,11 @@ module.exports.buildPages = function buildPages() {
   createPages(markdowns);
 };
 module.exports.buildStatic = function buildStatic() {
-  console.log(resolve("./site/theme/static/index.less"));
-  const lessContent = fs.readFileSync(
-    resolve("./site/theme/static/index.less"),
-    "utf-8"
-  );
+  const lessContent = fs.readFileSync(resolve("./src/index.less"), "utf-8");
   less.render(
     lessContent,
     {
-      paths: [resolve("./site/theme/static")],
+      paths: [resolveSource("./site/theme/static")],
       javascriptEnabled: true,
     },
     (err, res) => {
@@ -142,7 +159,7 @@ module.exports.buildStatic = function buildStatic() {
         return;
       }
       // console.log(res);
-      fs.writeFileSync(resolve("./antd/assets/index.css"), res.css);
+      fs.writeFileSync(resolvePublic("./assets/index.css"), res.css);
     }
   );
 };
