@@ -4,15 +4,13 @@
   "version": "v0.0.1",
   "preload": "./preload.js",
   "author": "ltaoo",
-  "homepage": "https://github.com/ltaoo",
+  "homepage": "https://github.com/ltaoo/utools-antd-docs",
   "logo": "logo.png",
   "features": [
     {
       "code": "antd",
-      "explain": "antd文档搜索",
-      "cmds": ["antd"],
-      "input": "./content/docs",
-      "origin": "https://github.com/reactjs/reactjs.org"
+      "explain": "antd文档查询",
+      "cmds": ["antd"]
     }
   ]
 }

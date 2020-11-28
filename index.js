@@ -1,5 +1,5 @@
 const { clean, buildPages, buildStatic } = require('./src/index');
 
-// clean();
+clean();
 buildPages();
-// buildStatic();
+buildStatic();

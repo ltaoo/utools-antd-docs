@@ -1,16 +1,26 @@
 {
+  "name": "utools-antd-docs",
+  "version": "0.0.1",
+  "description": "antd 文档搜索。",
+  "main": "index.js",
   "scripts": {
+    "build": "node index.js",
     "clone": "git clone --depth 1 --branch master https://gitee.com/ant-design/ant-design.git"
   },
-  "dependencies": {
+  "devDependencies": {
+    "antd": "^4.8.6",
+    "bisheng-plugin-react": "^1.1.1",
     "jsonml-to-react-element": "^1.1.11",
     "jsonml.js": "^0.1.0",
     "less": "^3.12.2",
     "mark-twain": "^2.0.3",
+    "prismjs": "^1.22.0",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "rimraf": "^3.0.2",
-    "utools-cli": "^0.2.1"
-  }
+    "rimraf": "^3.0.2"
+  },
+  "keywords": [],
+  "author": "ltaoo",
+  "license": "ISC"
 }
