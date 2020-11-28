@@ -250,3 +250,8 @@ module.exports.buildStatic = function buildStatic() {
     }
   );
 };
+
+module.exports.updatePackageReadme = function updatePackageReadme() {
+  rimraf.sync(resolve("./package/README.md"));
+  fs.copyFileSync(resolve("./README.md"), resolve("./package/README.md"));
+};
